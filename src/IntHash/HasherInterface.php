@@ -29,6 +29,8 @@ namespace IntHash;
 
 /**
  * Generic interface for hashers.
+ *
+ * @author Anton Bagdatyev (Tonix) <antonytuft@gmail.com>
  */
 interface HasherInterface {
   /**

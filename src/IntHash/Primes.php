@@ -29,6 +29,8 @@ namespace IntHash;
 
 /**
  * Class with primes as constants to be used across the various classes.
+ *
+ * @author Anton Bagdatyev (Tonix) <antonytuft@gmail.com>
  */
 class Primes {
   const PRIME_23 = 23;
