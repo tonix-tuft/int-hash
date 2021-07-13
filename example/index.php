@@ -209,10 +209,10 @@ echo json_encode(
 echo PHP_EOL;
 
 echo PHP_EOL;
-$c = curl_init();
+$ch = curl_init();
 echo json_encode(
   [
-    "resource (curl_init())" => $hasher->hash($c),
+    "resource (curl_init())" => $hasher->hash($ch),
   ],
   JSON_PRETTY_PRINT
 );
