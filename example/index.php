@@ -226,3 +226,20 @@ echo json_encode(
   JSON_PRETTY_PRINT
 );
 echo PHP_EOL;
+
+echo PHP_EOL;
+$a = 1;
+$b = 2;
+$c = 3;
+$fn = function ($d, $e) use ($a, &$b, $c) {
+  var_dump($a, $b, $c, $d, $e);
+};
+echo json_encode(
+  [
+    "function" => $hasher->hash($fn),
+  ],
+  JSON_PRETTY_PRINT
+);
+echo PHP_EOL;
+
+echo PHP_EOL;
