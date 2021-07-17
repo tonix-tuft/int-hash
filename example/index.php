@@ -153,6 +153,29 @@ echo PHP_EOL;
 echo PHP_EOL;
 echo json_encode(
   [
+    "array (['a' => 1, 'b' => 'a', 'c' => false, 'd' => 5, 'e' => true, [1, 'abc' => 2, 3, ['f' => 'f', 'g' => 5, ['hilmnopqrstuvwxyz' => 'a']]]])" => $hasher->hash(
+      [
+        'a' => 1,
+        'b' => 'a',
+        'c' => false,
+        'd' => 5,
+        'e' => true,
+        [
+          1,
+          'abc' => 2,
+          3,
+          ['f' => 'f', 'g' => 5, ['hilmnopqrstuvwxyz' => 'a']],
+        ],
+      ]
+    ),
+  ],
+  JSON_PRETTY_PRINT
+);
+echo PHP_EOL;
+
+echo PHP_EOL;
+echo json_encode(
+  [
     "array ([1, 'a', false, 5, true, [1, 2, 3, ['f', 5, [new stdClass(), new stdClass()]]], new ArrayIterator()])" => $hasher->hash(
       [
         1,
