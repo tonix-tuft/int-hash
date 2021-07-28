@@ -40,8 +40,14 @@ interface HasherInterface {
    * @see https://stackoverflow.com/questions/113511/best-implementation-for-hashcode-method-for-a-collection#answer-113600
    *
    * @param mixed $data The data for which to compute the hash.
+   * @param array $options An array of options:
+   *
+   *                           - 'prime' (int): A prime (an int) to use for hashing (instead of the default one
+   *                                            used by the concrete hasher implementation of this interface).
+   *                           - 'factor' (int): A factor (preferably a prime too) to also use for the computation of the hash (defaults to 1);
+   *
    * @return int The hash, represented as a 32-bit integer.
    * @throws \Exception If the hash couldn't be computed for some reasons.
    */
-  public function hash($data);
+  public function hash($data, $options = []);
 }

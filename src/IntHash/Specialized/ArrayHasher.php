@@ -41,20 +41,27 @@ class ArrayHasher implements HasherInterface {
   /**
    * {@inheritdoc}
    */
-  public function hash($data) {
+  public function hash($data, $options = []) {
+    [
+      'prime' => $prime,
+      'factor' => $factor,
+    ] = $options + [
+      'prime' => Primes::PRIME_37,
+      'factor' => 1,
+    ];
+
     $hash = 1;
     $hasher = new Hasher();
     foreach ($data as $key => $value) {
       $keyPartialHash = $hasher->hash($key);
       $partialHash = $hasher->hash($value);
 
-      $hash = IntUtils::intOverflow32Bit(
-        Primes::PRIME_37 * $hash + $keyPartialHash
-      );
-      $hash = IntUtils::intOverflow32Bit(
-        Primes::PRIME_37 * $hash + $partialHash
-      );
+      $hash = IntUtils::intOverflow32Bit($prime * $hash + $keyPartialHash);
+      $hash = IntUtils::intOverflow32Bit($prime * $hash + $partialHash);
     }
+
+    $hash = IntUtils::intOverflow32Bit($hash * $factor);
+
     return $hash;
   }
 }

@@ -29,6 +29,7 @@ namespace IntHash\Specialized;
 
 use IntHash\HasherInterface;
 use IntHash\Primes;
+use Tonix\PHPUtils\IntUtils;
 
 /**
  * A hasher for booleans.
@@ -39,8 +40,23 @@ class BoolHasher implements HasherInterface {
   /**
    * {@inheritdoc}
    */
-  public function hash($data) {
-    $hash = $data ? Primes::PRIME_47 : Primes::PRIME_43;
+  public function hash($data, $options = []) {
+    [
+      'prime' => $prime,
+      'factor' => $factor,
+    ] = $options + [
+      'prime' => null,
+      'factor' => 1,
+    ];
+
+    $primeForTruthyValues = Primes::PRIME_47;
+    $primeForFalsyValues = Primes::PRIME_43;
+    $hash = $data ? $primeForTruthyValues : $primeForFalsyValues;
+    if (!is_null($prime)) {
+      $hash = IntUtils::intOverflow32Bit($hash * $prime);
+    }
+    $hash = IntUtils::intOverflow32Bit($hash * $factor);
+
     return $hash;
   }
 }

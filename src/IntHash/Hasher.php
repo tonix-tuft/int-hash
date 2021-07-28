@@ -48,7 +48,7 @@ class Hasher implements HasherInterface {
   /**
    * {@inheritdoc}
    */
-  public function hash($data) {
+  public function hash($data, $options = []) {
     /**
      * Variables can store data of different types, and different data types can do different things.
      *
@@ -88,7 +88,7 @@ class Hasher implements HasherInterface {
         throw new \Exception($message);
       },
     ]);
-    $hash = $specializedHasher->hash($data);
+    $hash = $specializedHasher->hash($data, $options);
     return $hash;
   }
 }

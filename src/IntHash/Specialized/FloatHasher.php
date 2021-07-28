@@ -41,7 +41,15 @@ class FloatHasher implements HasherInterface {
   /**
    * {@inheritdoc}
    */
-  public function hash($data) {
+  public function hash($data, $options = []) {
+    [
+      'prime' => $prime,
+      'factor' => $factor,
+    ] = $options + [
+      'prime' => Primes::PRIME_53,
+      'factor' => 1,
+    ];
+
     $hash = 1;
     $stringHasher = new StringHasher();
     $str = (string) $data;
@@ -49,8 +57,9 @@ class FloatHasher implements HasherInterface {
     $md5Str = md5($str);
     $stringHash = $stringHasher->hash($md5Str);
 
-    $hash = IntUtils::intOverflow32Bit(Primes::PRIME_53 * $hash + $stringHash);
-    $hash = IntUtils::intOverflow32Bit(Primes::PRIME_53 * $hash + $len);
+    $hash = IntUtils::intOverflow32Bit($prime * $hash + $stringHash);
+    $hash = IntUtils::intOverflow32Bit($prime * $hash + $len);
+    $hash = IntUtils::intOverflow32Bit($hash * $factor);
 
     return $hash;
   }

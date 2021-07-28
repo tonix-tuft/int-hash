@@ -29,6 +29,7 @@ namespace IntHash\Specialized;
 
 use IntHash\HasherInterface;
 use IntHash\Primes;
+use Tonix\PHPUtils\IntUtils;
 
 /**
  * A hasher for NULL.
@@ -39,8 +40,22 @@ class NullHasher implements HasherInterface {
   /**
    * {@inheritdoc}
    */
-  public function hash($data) {
-    $hash = Primes::PRIME_23;
+  public function hash($data, $options = []) {
+    [
+      'prime' => $prime,
+      'factor' => $factor,
+    ] = $options + [
+      'prime' => null,
+      'factor' => 1,
+    ];
+
+    $defaultPrime = Primes::PRIME_23;
+    $hash = $defaultPrime;
+    if (!is_null($prime)) {
+      $hash = IntUtils::intOverflow32Bit($hash * $prime);
+    }
+    $hash = IntUtils::intOverflow32Bit($hash * $factor);
+
     return $hash;
   }
 }

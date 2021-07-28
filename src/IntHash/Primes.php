@@ -41,4 +41,5 @@ class Primes {
   const PRIME_43 = 43;
   const PRIME_47 = 47;
   const PRIME_53 = 53;
+  const PRIME_59 = 59;
 }

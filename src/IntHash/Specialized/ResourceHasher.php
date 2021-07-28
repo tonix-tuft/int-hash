@@ -42,7 +42,15 @@ class ResourceHasher implements HasherInterface {
   /**
    * {@inheritdoc}
    */
-  public function hash($data) {
+  public function hash($data, $options = []) {
+    [
+      'prime' => $prime,
+      'factor' => $factor,
+    ] = $options + [
+      'prime' => Primes::PRIME_41,
+      'factor' => 1,
+    ];
+
     $hash = 1;
     $intHasher = new IntHasher();
     $stringHasher = new StringHasher();
@@ -51,8 +59,9 @@ class ResourceHasher implements HasherInterface {
     $intHash = $intHasher->hash($resourceId);
     $stringHash = $stringHasher->hash($resourceType);
 
-    $hash = IntUtils::intOverflow32Bit(Primes::PRIME_41 * $hash + $intHash);
-    $hash = IntUtils::intOverflow32Bit(Primes::PRIME_41 * $hash + $stringHash);
+    $hash = IntUtils::intOverflow32Bit($prime * $hash + $intHash);
+    $hash = IntUtils::intOverflow32Bit($prime * $hash + $stringHash);
+    $hash = IntUtils::intOverflow32Bit($hash * $factor);
 
     return $hash;
   }

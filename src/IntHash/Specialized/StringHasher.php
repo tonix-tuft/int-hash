@@ -40,13 +40,24 @@ class StringHasher implements HasherInterface {
   /**
    * {@inheritdoc}
    */
-  public function hash($data) {
+  public function hash($data, $options = []) {
+    [
+      'prime' => $prime,
+      'factor' => $factor,
+    ] = $options + [
+      'prime' => Primes::PRIME_31,
+      'factor' => 1,
+    ];
+
     $hash = 1;
     $length = strlen($data);
     for ($i = 0; $i < $length; $i++) {
       $char = ord($data[$i]);
-      $hash = IntUtils::intOverflow32Bit(Primes::PRIME_31 * $hash + $char);
+      $hash = IntUtils::intOverflow32Bit($prime * $hash + $char);
     }
+
+    $hash = IntUtils::intOverflow32Bit($hash * $factor);
+
     return $hash;
   }
 }

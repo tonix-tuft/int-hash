@@ -28,6 +28,7 @@
 namespace IntHash\Specialized;
 
 use IntHash\HasherInterface;
+use IntHash\Primes;
 use Tonix\PHPUtils\IntUtils;
 
 /**
@@ -39,8 +40,25 @@ class IntHasher implements HasherInterface {
   /**
    * {@inheritdoc}
    */
-  public function hash($data) {
-    $hash = IntUtils::intOverflow32Bit($data);
+  public function hash($data, $options = []) {
+    [
+      'prime' => $prime,
+      'factor' => $factor,
+    ] = $options + [
+      'prime' => null,
+      'factor' => 1,
+    ];
+
+    $hash = $data;
+    if (!is_null($prime)) {
+      $hash = 1;
+      $hash = IntUtils::intOverflow32Bit($hash * $prime + $data);
+      if (empty($hash) && $data === PHP_INT_MAX) {
+        $hash = Primes::PRIME_59;
+      }
+    }
+    $hash = IntUtils::intOverflow32Bit($hash * $factor);
+
     return $hash;
   }
 }
